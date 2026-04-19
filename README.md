@@ -39,8 +39,8 @@ If you add an OpenAI or Anthropic API key, it also sends your changes to an LLM 
 You need VS Code (1.85+), Node.js (18+), and Git.
 
 ```bash
-git clone https://github.com/ikeaborede/shipit.git
-cd shipit
+git clone https://github.com/AMIT1229/ShipIT.git
+cd ShipIT
 npm install
 npm run build
 ```
