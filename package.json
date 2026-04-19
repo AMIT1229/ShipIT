@@ -1,0 +1,160 @@
+{
+  "name": "shipit",
+  "displayName": "ShipIt",
+  "description": "Pre-push self code review — static analysis + AI-powered review right inside VS Code",
+  "version": "0.1.0",
+  "publisher": "shipit",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Linters",
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:.git"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "shipit.review",
+        "title": "ShipIt: Review My Changes",
+        "icon": "$(checklist)"
+      },
+      {
+        "command": "shipit.reviewFile",
+        "title": "ShipIt: Review Current File"
+      },
+      {
+        "command": "shipit.clearReview",
+        "title": "ShipIt: Clear Review"
+      },
+      {
+        "command": "shipit.installHook",
+        "title": "ShipIt: Install Pre-Push Hook"
+      },
+      {
+        "command": "shipit.copyPrDescription",
+        "title": "ShipIt: Copy PR Description"
+      }
+    ],
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "shipit",
+          "title": "ShipIt",
+          "icon": "$(shield)"
+        }
+      ]
+    },
+    "views": {
+      "shipit": [
+        {
+          "id": "shipit.reviewTree",
+          "name": "Review"
+        },
+        {
+          "type": "webview",
+          "id": "shipit.dashboard",
+          "name": "Dashboard"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "ShipIt",
+      "properties": {
+        "shipit.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "API key for LLM-powered review (OpenAI or Anthropic)"
+        },
+        "shipit.provider": {
+          "type": "string",
+          "enum": [
+            "openai",
+            "anthropic"
+          ],
+          "default": "openai",
+          "description": "LLM provider to use"
+        },
+        "shipit.enableAiReview": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable AI-powered review (requires API key)"
+        },
+        "shipit.analyzers.consoleLog": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect console.log statements"
+        },
+        "shipit.analyzers.secrets": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect hardcoded secrets"
+        },
+        "shipit.analyzers.todos": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect TODO/FIXME/HACK comments"
+        },
+        "shipit.analyzers.largeFunctions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect large functions"
+        },
+        "shipit.analyzers.typeAny": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect TypeScript 'any' usage"
+        },
+        "shipit.analyzers.debugger": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect debugger statements"
+        },
+        "shipit.analyzers.tsDirective": {
+          "type": "boolean",
+          "default": true,
+          "description": "Detect @ts-ignore and @ts-nocheck directives"
+        },
+        "shipit.largeFunctionThreshold": {
+          "type": "number",
+          "default": 50,
+          "description": "Lines threshold for large function detection"
+        },
+        "shipit.scoreThreshold": {
+          "type": "number",
+          "default": 80,
+          "description": "Score threshold for pre-push notification"
+        },
+        "shipit.autoReviewOnSave": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatically run review on file save"
+        }
+      }
+    },
+    "menus": {
+      "view/title": [
+        {
+          "command": "shipit.review",
+          "when": "view == shipit.reviewTree",
+          "group": "navigation"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.config.mjs",
+    "watch": "node esbuild.config.mjs --watch",
+    "lint": "eslint src --ext ts"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "esbuild": "^0.20.0",
+    "typescript": "^5.4.0"
+  }
+}
