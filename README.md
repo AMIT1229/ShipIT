@@ -45,8 +45,20 @@ npm install
 npm run build
 ```
 
-Then open the folder in VS Code and press **F5**. This launches a new VS Code window with ShipIt active. Open any git repo in that window and run `ShipIt: Review My Changes` from the command palette (Ctrl+Shift+P).
+Then open the `ShipIT` folder in VS Code and press **F5**. This launches a new VS Code window (the Extension Development Host) with ShipIt loaded.
 
+**Important:** The project you open in that new window must be a git repo with at least one commit. ShipIt analyzes your `git diff`, so it needs git history to compare against. If you want to test with a fresh project:
+
+```bash
+mkdir test-project
+cd test-project
+git init
+echo "console.log('hello');" > index.ts
+git add .
+git commit -m "init"
+```
+
+Now make some changes to `index.ts` (add a `console.log`, a `debugger`, etc.) **without committing**, then run `ShipIt: Review My Changes` from the command palette (Ctrl+Shift+P). ShipIt will pick up the uncommitted changes.
 To enable AI review (optional), add to your VS Code settings:
 
 ```json

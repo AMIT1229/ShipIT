@@ -19,7 +19,17 @@ export function activate(context: vscode.ExtensionContext): void {
 
   const workspaceRoot = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
   if (!workspaceRoot || !isGitRepo(workspaceRoot)) {
-    log('No git repository found — ShipIt will not activate.');
+    log('No git repository found — registering fallback commands.');
+
+    // Register a fallback so the command doesn't show "not found"
+    context.subscriptions.push(
+      vscode.commands.registerCommand('shipit.review', () => {
+        vscode.window.showWarningMessage('ShipIt: No git repository found. Open a project with a .git folder to use ShipIt.');
+      }),
+      vscode.commands.registerCommand('shipit.clearReview', () => { }),
+      vscode.commands.registerCommand('shipit.copyPrDescription', () => { }),
+      vscode.commands.registerCommand('shipit.installHook', () => { }),
+    );
     return;
   }
 
